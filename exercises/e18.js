@@ -7,34 +7,16 @@ import { maxBy } from "./e17";
  */
 
 export function getGreatestDiscoveryYear(data) {
-  let yearArray = data.asteroids.reduce(function (acc, val) {
-    let year = val.discoveryYear;
-    if (acc[year] == null) {
-      acc[year] = [year, 0];
-    }
-    acc[year][1] += 1;
-    return acc;
-  }, {});
+  const asteroidObject = data.asteroids
+    .reduce((obj, asteroid) => {
+      let year = asteroid.discoveryYear;
+      if (!obj[year]) {obj[year] = {"year": year, "count": 0};}
+      obj[year]["count"] += 1;
+      return obj;
+      }, {});
 
-  let convertedArray = Object.values(yearArray);
-
-  const greatestYear = maxBy(convertedArray, (year) => year[1]);
-
-  return greatestYear[0];
-}
-
-// let yearArray = data.asteroids
-//   .reduce(function(acc, asteroid) {
-//     let year = asteroid.discoveryYear;
-
-//     if (!acc.includes(acc[year])) {
-//       acc[year] = {y: year, count: 1};
-//     } else {
-//       acc[year].count += 1;
-//     }
-//   }, []);
-
-//   return yearArray;
+  return (maxBy(Object.values(asteroidObject), (asteroid) => asteroid.count)).year;
+} 
 
 // Your code goes here...
 // feel free to import your `maxBy` or `minBy` methods from previous lessons
